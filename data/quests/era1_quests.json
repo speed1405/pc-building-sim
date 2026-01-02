@@ -1,0 +1,78 @@
+[
+  {
+    "Id": "era1-quest-001",
+    "Name": "First Build Tutorial",
+    "Description": "Build your first PC with basic components. Install a case, motherboard, CPU, RAM, and power supply.",
+    "EraId": 1,
+    "Reward": 100.00,
+    "ReputationReward": 10,
+    "Type": 0,
+    "Requirements": [
+      {
+        "Description": "Install a case",
+        "Type": 0,
+        "PartType": "Case",
+        "IsMet": false
+      },
+      {
+        "Description": "Install a motherboard",
+        "Type": 0,
+        "PartType": "Motherboard",
+        "IsMet": false
+      },
+      {
+        "Description": "Install a CPU",
+        "Type": 0,
+        "PartType": "CPU",
+        "IsMet": false
+      }
+    ],
+    "IsCompleted": false
+  },
+  {
+    "Id": "era1-quest-002",
+    "Name": "The IRQ Conflict",
+    "Description": "Resolve the classic Sound Blaster vs Printer conflict by properly configuring IRQ settings.",
+    "EraId": 1,
+    "Reward": 250.00,
+    "ReputationReward": 25,
+    "Type": 5,
+    "Requirements": [
+      {
+        "Description": "Install Sound Blaster card",
+        "Type": 0,
+        "PartType": "SoundCard",
+        "IsMet": false
+      },
+      {
+        "Description": "Configure IRQ settings",
+        "Type": 1,
+        "IsMet": false
+      }
+    ],
+    "IsCompleted": false
+  },
+  {
+    "Id": "era1-quest-003",
+    "Name": "Simple Repair Job",
+    "Description": "A customer's PC won't boot. Install a new power supply to fix the issue.",
+    "EraId": 1,
+    "Reward": 150.00,
+    "ReputationReward": 15,
+    "Type": 1,
+    "Requirements": [
+      {
+        "Description": "Install a working PSU",
+        "Type": 0,
+        "PartType": "PSU",
+        "IsMet": false
+      },
+      {
+        "Description": "Test boot the PC",
+        "Type": 3,
+        "IsMet": false
+      }
+    ],
+    "IsCompleted": false
+  }
+]
