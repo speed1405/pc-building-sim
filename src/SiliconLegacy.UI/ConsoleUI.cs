@@ -214,7 +214,7 @@ public class ConsoleUI
                 var completedReqs = quest.Requirements.Count(r => r.IsMet);
                 var totalReqs = quest.Requirements.Count;
                 var progress = $"{completedReqs}/{totalReqs}";
-                activeTable.AddRow(quest.Name, $"${quest.Reward:F2}", quest.Type.ToString(), progress);
+                activeTable.AddRow(Markup.Escape(quest.Name), $"${quest.Reward:F2}", quest.Type.ToString(), progress);
             }
 
             AnsiConsole.Write(activeTable);
@@ -234,7 +234,7 @@ public class ConsoleUI
 
             foreach (var quest in availableQuests)
             {
-                table.AddRow(quest.Name, $"${quest.Reward:F2}", quest.Type.ToString());
+                table.AddRow(Markup.Escape(quest.Name), $"${quest.Reward:F2}", quest.Type.ToString());
             }
 
             AnsiConsole.Write(table);
@@ -309,7 +309,7 @@ public class ConsoleUI
         foreach (var req in quest.Requirements)
         {
             var status = req.IsMet ? "[green]✓ Complete[/]" : "[yellow]○ Pending[/]";
-            reqTable.AddRow(req.Description, status);
+            reqTable.AddRow(Markup.Escape(req.Description), status);
         }
 
         AnsiConsole.Write(reqTable);
