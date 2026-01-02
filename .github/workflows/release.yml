@@ -2,6 +2,8 @@ name: Release
 
 on:
   push:
+    branches:
+      - main
     tags:
       - 'v*'
   workflow_dispatch:
@@ -98,6 +100,22 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     
+    - name: Generate tag name for main branch
+      id: generate_tag
+      run: |
+        if [ "${{ github.event_name }}" = "push" ] && [ "${{ github.ref_name }}" = "main" ]; then
+          # Extract date from GitHub Actions context for consistency
+          TIMESTAMP=$(date -u -d "${{ github.event.head_commit.timestamp }}" +'%Y%m%d-%H%M%S' 2>/dev/null || date -u +'%Y%m%d-%H%M%S')
+          TAG_NAME="draft-${TIMESTAMP}-$(echo ${{ github.sha }} | cut -c1-7)-${{ github.run_number }}"
+          echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
+          echo "is_draft=true" >> $GITHUB_OUTPUT
+        else
+          TAG_NAME="${{ github.event.inputs.version || github.ref_name }}"
+          echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
+          echo "is_draft=false" >> $GITHUB_OUTPUT
+        fi
+        echo "Generated tag name: $TAG_NAME"
+    
     - name: Download all artifacts
       uses: actions/download-artifact@v4
       with:
@@ -111,8 +129,8 @@ jobs:
           artifacts/siliconlegacy-win-x64/*
           artifacts/siliconlegacy-osx-x64/*
           artifacts/siliconlegacy-osx-arm64/*
-        draft: false
+        draft: ${{ steps.generate_tag.outputs.is_draft }}
         prerelease: false
         generate_release_notes: true
-        tag_name: ${{ github.event.inputs.version || github.ref_name }}
+        tag_name: ${{ steps.generate_tag.outputs.tag_name }}
         token: ${{ secrets.GITHUB_TOKEN }}
