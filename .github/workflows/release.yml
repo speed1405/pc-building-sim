@@ -4,12 +4,18 @@ on:
   push:
     tags:
       - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version tag (e.g., v1.0.0)'
+        required: true
+        type: string
 
 jobs:
   release:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
     strategy:
       matrix:
         include:
@@ -91,12 +97,12 @@ jobs:
       uses: softprops/action-gh-release@v1
       with:
         files: |
-          artifacts/siliconlegacy-linux-x64/*.tar.gz
-          artifacts/siliconlegacy-win-x64/*.zip
-          artifacts/siliconlegacy-osx-x64/*.tar.gz
-          artifacts/siliconlegacy-osx-arm64/*.tar.gz
+          artifacts/siliconlegacy-linux-x64/*
+          artifacts/siliconlegacy-win-x64/*
+          artifacts/siliconlegacy-osx-x64/*
+          artifacts/siliconlegacy-osx-arm64/*
         draft: false
         prerelease: false
         generate_release_notes: true
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        tag_name: ${{ github.event.inputs.version || github.ref_name }}
+        token: ${{ secrets.GITHUB_TOKEN }}

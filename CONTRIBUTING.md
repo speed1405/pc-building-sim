@@ -76,6 +76,49 @@ Quests are stored in JSON files in the `data/quests/` directory. Each quest incl
 
 Currently, the project uses manual testing. We welcome contributions to add automated tests!
 
+## Releases
+
+### Creating a Release
+
+The project uses GitHub Actions to automatically build and release binaries for all supported platforms (Linux x64, Windows x64, macOS x64, and macOS ARM64).
+
+#### Method 1: Automatic Release via Git Tag
+
+Push a version tag to trigger an automatic release:
+
+```bash
+# Create and push a version tag
+git tag v1.0.0
+git push origin v1.0.0
+```
+
+This will automatically:
+1. Build binaries for all platforms
+2. Create archives (`.zip` for Windows, `.tar.gz` for Unix platforms)
+3. Create a GitHub release with all artifacts
+4. Generate release notes automatically
+
+#### Method 2: Manual Release via GitHub UI
+
+You can also trigger a release manually:
+
+1. Go to the "Actions" tab in the GitHub repository
+2. Select the "Release" workflow
+3. Click "Run workflow"
+4. Enter the version tag (e.g., `v1.0.0`)
+5. Click "Run workflow"
+
+The workflow will build and create a release with the specified version tag.
+
+### Release Versioning
+
+Follow [Semantic Versioning](https://semver.org/):
+- `v1.0.0` - Major release (breaking changes)
+- `v1.1.0` - Minor release (new features, backward compatible)
+- `v1.0.1` - Patch release (bug fixes)
+
+Always prefix version tags with `v` (e.g., `v1.0.0`, not `1.0.0`).
+
 ## Pull Request Guidelines
 
 - Keep PRs focused on a single feature or bug fix
