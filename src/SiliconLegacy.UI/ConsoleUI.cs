@@ -242,9 +242,16 @@ public class ConsoleUI
 
         AnsiConsole.WriteLine();
         
-        // Prompt to view/start quest
-        var questChoices = gameState.AvailableQuests.Select(q => 
-            q.IsActive ? $"[green]★[/] {q.Name}" : q.Name).ToList();
+        // Prompt to view/start quest - create a dictionary to map choices to quests
+        var questChoiceMap = new Dictionary<string, Quest>();
+        var questChoices = new List<string>();
+        
+        foreach (var quest in gameState.AvailableQuests)
+        {
+            var displayName = quest.IsActive ? $"[green]★[/] {quest.Name}" : quest.Name;
+            questChoices.Add(displayName);
+            questChoiceMap[displayName] = quest;
+        }
         questChoices.Add("Back to Main Menu");
 
         var choice = AnsiConsole.Prompt(
@@ -256,11 +263,8 @@ public class ConsoleUI
         if (choice == "Back to Main Menu")
             return;
 
-        // Find the selected quest by matching the quest name (strip markup if present)
-        var questName = choice.Replace("[green]★[/] ", "");
-        var selectedQuest = gameState.AvailableQuests.FirstOrDefault(q => q.Name == questName);
-        
-        if (selectedQuest != null)
+        // Find the selected quest using the dictionary
+        if (questChoiceMap.TryGetValue(choice, out var selectedQuest))
         {
             ShowQuestDetails(gameState, selectedQuest);
         }
@@ -282,8 +286,6 @@ public class ConsoleUI
             
             [cyan]Description:[/]
             {quest.Description}
-            
-            [cyan]Requirements:[/]
             """)
         {
             Header = new PanelHeader($"[{statusColor}]{quest.Name}[/{statusColor}]"),
@@ -291,8 +293,10 @@ public class ConsoleUI
         };
 
         AnsiConsole.Write(panel);
+        AnsiConsole.WriteLine();
 
         // Show requirements
+        AnsiConsole.MarkupLine("[cyan]Requirements:[/]");
         var reqTable = new Table();
         reqTable.Border(TableBorder.Rounded);
         reqTable.AddColumn("[cyan]Requirement[/]");
