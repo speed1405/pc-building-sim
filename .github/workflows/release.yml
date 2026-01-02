@@ -105,7 +105,7 @@ jobs:
       run: |
         if [ "${{ github.event_name }}" = "push" ] && [ "${{ github.ref_name }}" = "main" ]; then
           # Extract commit timestamp from git metadata
-          TIMESTAMP=$(git log -1 --format=%ci | awk '{gsub(/-|:/,"",$1); gsub(/:/,"",$2); print $1"-"substr($2,1,6)}')
+          TIMESTAMP=$(git log -1 --format=%cd --date=format:'%Y%m%d-%H%M%S')
           TAG_NAME="draft-${TIMESTAMP}-$(echo ${{ github.sha }} | cut -c1-7)-${{ github.run_number }}"
           echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
           echo "is_draft=true" >> $GITHUB_OUTPUT
