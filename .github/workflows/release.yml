@@ -104,7 +104,7 @@ jobs:
       id: generate_tag
       run: |
         if [ "${{ github.ref }}" = "refs/heads/main" ]; then
-          TAG_NAME="draft-$(date +'%Y%m%d-%H%M%S')-$(echo ${{ github.sha }} | cut -c1-7)"
+          TAG_NAME="draft-$(date +'%Y%m%d-%H%M%S')-$(echo ${{ github.sha }} | cut -c1-7)-${{ github.run_number }}"
           echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
           echo "is_draft=true" >> $GITHUB_OUTPUT
         else

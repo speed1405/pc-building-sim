@@ -87,7 +87,7 @@ The project uses GitHub Actions to automatically build and release binaries for 
 When code is merged to the `main` branch, the workflow automatically:
 1. Builds binaries for all platforms
 2. Creates archives (`.zip` for Windows, `.tar.gz` for Unix platforms)
-3. Creates a **draft release** with auto-generated tag name (format: `draft-YYYYMMDD-HHMMSS-{sha}`)
+3. Creates a **draft release** with auto-generated tag name (format: `draft-YYYYMMDD-HHMMSS-{sha}-{run_number}`)
 4. Generates release notes from commits automatically
 
 Draft releases are not visible to the public and can be edited or published later through the GitHub UI.
