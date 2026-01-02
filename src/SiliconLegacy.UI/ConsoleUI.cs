@@ -248,7 +248,8 @@ public class ConsoleUI
         
         foreach (var quest in gameState.AvailableQuests)
         {
-            var displayName = quest.IsActive ? $"[green]★[/] {quest.Name}" : quest.Name;
+            var escapedName = Markup.Escape(quest.Name);
+            var displayName = quest.IsActive ? $"[green]★[/] {escapedName}" : escapedName;
             questChoices.Add(displayName);
             questChoiceMap[displayName] = quest;
         }
@@ -277,18 +278,21 @@ public class ConsoleUI
 
         var statusColor = quest.IsActive ? "green" : "yellow";
         var statusText = quest.IsActive ? "ACTIVE" : "AVAILABLE";
+        
+        var escapedName = Markup.Escape(quest.Name);
+        var escapedDescription = Markup.Escape(quest.Description);
 
         var panel = new Panel($"""
-            [yellow]Quest:[/] {quest.Name}
+            [yellow]Quest:[/] {escapedName}
             [yellow]Status:[/] [{statusColor}]{statusText}[/{statusColor}]
             [yellow]Type:[/] {quest.Type}
             [yellow]Reward:[/] ${quest.Reward:F2} + {quest.ReputationReward} reputation
             
             [cyan]Description:[/]
-            {quest.Description}
+            {escapedDescription}
             """)
         {
-            Header = new PanelHeader($"[{statusColor}]{quest.Name}[/{statusColor}]"),
+            Header = new PanelHeader($"[{statusColor}]{escapedName}[/{statusColor}]"),
             Border = BoxBorder.Double
         };
 
