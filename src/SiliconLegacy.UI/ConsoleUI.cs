@@ -197,21 +197,156 @@ public class ConsoleUI
             return;
         }
 
-        var table = new Table();
-        table.Border(TableBorder.Rounded);
-        table.AddColumn("[yellow]Quest[/]");
-        table.AddColumn("[green]Reward[/]");
-        table.AddColumn("[cyan]Type[/]");
-
-        foreach (var quest in gameState.AvailableQuests)
+        // Show active quests first if any
+        var activeQuests = gameState.AvailableQuests.Where(q => q.IsActive).ToList();
+        if (activeQuests.Any())
         {
-            table.AddRow(quest.Name, $"${quest.Reward:F2}", quest.Type.ToString());
+            AnsiConsole.MarkupLine("[green]═══ Active Quests ═══[/]\n");
+            var activeTable = new Table();
+            activeTable.Border(TableBorder.Rounded);
+            activeTable.AddColumn("[yellow]Quest[/]");
+            activeTable.AddColumn("[green]Reward[/]");
+            activeTable.AddColumn("[cyan]Type[/]");
+            activeTable.AddColumn("[magenta]Progress[/]");
+
+            foreach (var quest in activeQuests)
+            {
+                var completedReqs = quest.Requirements.Count(r => r.IsMet);
+                var totalReqs = quest.Requirements.Count;
+                var progress = $"{completedReqs}/{totalReqs}";
+                activeTable.AddRow(Markup.Escape(quest.Name), $"${quest.Reward:F2}", quest.Type.ToString(), progress);
+            }
+
+            AnsiConsole.Write(activeTable);
+            AnsiConsole.WriteLine();
         }
 
-        AnsiConsole.Write(table);
+        // Show available quests
+        var availableQuests = gameState.AvailableQuests.Where(q => !q.IsActive).ToList();
+        if (availableQuests.Any())
+        {
+            AnsiConsole.MarkupLine("[cyan]═══ Available Quests ═══[/]\n");
+            var table = new Table();
+            table.Border(TableBorder.Rounded);
+            table.AddColumn("[yellow]Quest[/]");
+            table.AddColumn("[green]Reward[/]");
+            table.AddColumn("[cyan]Type[/]");
+
+            foreach (var quest in availableQuests)
+            {
+                table.AddRow(Markup.Escape(quest.Name), $"${quest.Reward:F2}", quest.Type.ToString());
+            }
+
+            AnsiConsole.Write(table);
+        }
+
         AnsiConsole.WriteLine();
-        AnsiConsole.Markup("[grey]Press any key to continue...[/]");
-        Console.ReadKey(true);
+        
+        // Prompt to view/start quest - create a dictionary to map choices to quests
+        var questChoiceMap = new Dictionary<string, Quest>();
+        var questChoices = new List<string>();
+        
+        foreach (var quest in gameState.AvailableQuests)
+        {
+            var escapedName = Markup.Escape(quest.Name);
+            var displayName = quest.IsActive ? $"[green]★[/] {escapedName}" : escapedName;
+            questChoices.Add(displayName);
+            questChoiceMap[displayName] = quest;
+        }
+        questChoices.Add("Back to Main Menu");
+
+        var choice = AnsiConsole.Prompt(
+            new SelectionPrompt<string>()
+                .Title("[yellow]Select a quest to view details or start:[/]")
+                .PageSize(10)
+                .AddChoices(questChoices));
+
+        if (choice == "Back to Main Menu")
+            return;
+
+        // Find the selected quest using the dictionary
+        if (questChoiceMap.TryGetValue(choice, out var selectedQuest))
+        {
+            ShowQuestDetails(gameState, selectedQuest);
+        }
+    }
+
+    private void ShowQuestDetails(GameState gameState, Quest quest)
+    {
+        Console.Clear();
+        ShowHeader(gameState);
+
+        var statusColor = quest.IsActive ? "green" : "yellow";
+        var statusText = quest.IsActive ? "ACTIVE" : "AVAILABLE";
+        
+        var escapedName = Markup.Escape(quest.Name);
+        var escapedDescription = Markup.Escape(quest.Description);
+
+        var panel = new Panel($"""
+            [yellow]Quest:[/] {escapedName}
+            [yellow]Status:[/] [{statusColor}]{statusText}[/{statusColor}]
+            [yellow]Type:[/] {quest.Type}
+            [yellow]Reward:[/] ${quest.Reward:F2} + {quest.ReputationReward} reputation
+            
+            [cyan]Description:[/]
+            {escapedDescription}
+            """)
+        {
+            Header = new PanelHeader($"[{statusColor}]{escapedName}[/{statusColor}]"),
+            Border = BoxBorder.Double
+        };
+
+        AnsiConsole.Write(panel);
+        AnsiConsole.WriteLine();
+
+        // Show requirements
+        AnsiConsole.MarkupLine("[cyan]Requirements:[/]");
+        var reqTable = new Table();
+        reqTable.Border(TableBorder.Rounded);
+        reqTable.AddColumn("[cyan]Requirement[/]");
+        reqTable.AddColumn("[green]Status[/]");
+
+        foreach (var req in quest.Requirements)
+        {
+            var status = req.IsMet ? "[green]✓ Complete[/]" : "[yellow]○ Pending[/]";
+            reqTable.AddRow(Markup.Escape(req.Description), status);
+        }
+
+        AnsiConsole.Write(reqTable);
+        AnsiConsole.WriteLine();
+
+        // Show action options
+        var actions = new List<string>();
+        if (!quest.IsActive)
+        {
+            actions.Add("Start Quest");
+        }
+        else
+        {
+            actions.Add("View Progress");
+        }
+        actions.Add("Back to Quest List");
+
+        var action = AnsiConsole.Prompt(
+            new SelectionPrompt<string>()
+                .Title("[yellow]What would you like to do?[/]")
+                .AddChoices(actions));
+
+        if (action == "Start Quest")
+        {
+            if (_engine.StartQuest(gameState, quest))
+            {
+                AnsiConsole.MarkupLine("[green]✓ Quest started! Check your workbench to begin.[/]");
+                AnsiConsole.Markup("[grey]Press any key to continue...[/]");
+                Console.ReadKey(true);
+            }
+        }
+        else if (action == "View Progress")
+        {
+            AnsiConsole.MarkupLine($"[cyan]Progress: {quest.Requirements.Count(r => r.IsMet)}/{quest.Requirements.Count} requirements completed[/]");
+            AnsiConsole.Markup("[grey]Press any key to continue...[/]");
+            Console.ReadKey(true);
+        }
     }
 
     private void ShopParts(GameState gameState, List<Part> allParts, List<Era> eras)

@@ -27,7 +27,8 @@
         "IsMet": false
       }
     ],
-    "IsCompleted": false
+    "IsCompleted": false,
+    "IsActive": false
   },
   {
     "Id": "era1-quest-002",
@@ -50,7 +51,8 @@
         "IsMet": false
       }
     ],
-    "IsCompleted": false
+    "IsCompleted": false,
+    "IsActive": false
   },
   {
     "Id": "era1-quest-003",
@@ -73,6 +75,7 @@
         "IsMet": false
       }
     ],
-    "IsCompleted": false
+    "IsCompleted": false,
+    "IsActive": false
   }
 ]

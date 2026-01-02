@@ -129,4 +129,13 @@ public class GameEngine
 
         return true;
     }
+
+    public bool StartQuest(GameState gameState, Quest quest)
+    {
+        if (quest.IsActive || quest.IsCompleted)
+            return false;
+
+        quest.IsActive = true;
+        return true;
+    }
 }
