@@ -2,7 +2,7 @@
 ## Official Design & Development Plan
 
 ### 1. Project Vision
-A text-based, cross-platform PC building simulation written in C# (.NET 8). Players navigate the history of personal computing through five distinct eras, completing grounded, real-life quests while managing a growing PC repair business.
+A text-based, cross-platform PC building simulation written in C# (.NET 8). Players navigate the history of personal computing through five distinct eras, completing grounded, real-life quests while managing compatibility, heat, and power.
 
 ---
 
@@ -96,8 +96,55 @@ The game is built with a modular "Plug-in" architecture for future content:
 ---
 
 ### 8. Integrated DLC Management System
-- **DLC Manifest Service**: A centralized remote JSON manifest listing available DLC packs, version info, and download URLs.
-- **In-Game Content Manager**: A dedicated UI menu to browse, purchase (simulated), and trigger downloads of new hardware packs and quest lines.
-- **Asynchronous Asset Downloader**: Background downloading of compressed DLC packages (`.zip`/`.7z`) with progress bars and CRC32 verification.
-- **Hot-Loading Architecture**: A dynamic "Hot-Swap" system for the JSON database that allows new parts to be injected into the game state without requiring a full application restart.
-- **Mod/DLC Sandbox**: A secure directory structure (`/dlc/`) that keeps expansion content isolated from the core engine files for easy management and uninstallation.
+
+- **DLC Manifest Service:**
+  - A remote JSON manifest served over HTTPS listing available DLC packs with fields: `id`, `name`, `version`, `description`, `size`, `checksum` (SHA-256), `signature`, `download_url`, `dependencies`, `minimum_game_version`, `release_notes`.
+  - Caching of the manifest locally with TTL to support offline browsing.
+
+- **In-Game Content Manager (UI):**
+  - A Spectre.Console-driven “Content” menu with tabs: Available, Installed, Updates, Settings.
+  - For each DLC: detail view (features, quests, parts), version, size, changelog, disk space required, compatibility warnings.
+  - Actions: Download, Install, Update, Disable, Uninstall.
+
+- **Download & Verification Pipeline:**
+  - Asynchronous downloader with resumable transfers and progress bar (percent, speed, ETA).
+  - Integrity verification via SHA-256; optional signature verification (Ed25519) for authenticity.
+  - Clear error handling and retry policy; informative messages for network and verification failures.
+
+- **Packaging & Installation:**
+  - DLC packages distributed as zip archives containing:
+    - `content/parts/*.json`
+    - `content/quests/*.json`
+    - `content/assets/*` (ASCII art, icons)
+    - `meta/manifest.json`
+    - `meta/license.txt`
+  - Install to sandboxed game path:
+    - Windows: `%AppData%/SiliconLegacy/dlc/{dlc-id}`
+    - Linux: `~/.local/share/SiliconLegacy/dlc/{dlc-id}`
+    - macOS: `~/Library/Application Support/SiliconLegacy/dlc/{dlc-id}`
+  - Maintain an `installed.json` registry with status, version, install date, and content indexes.
+
+- **Hot-Loading & Integration:**
+  - Live reload of part and quest databases: merge DLC JSON with base datasets using safe schema validation.
+  - Conflict resolution via namespaced IDs (e.g., `dlc.serverroom.part.cpu.epyc-7742`).
+  - Dependency checks: prevent enabling DLC with unmet dependencies or incompatible game versions.
+
+- **Updates & Uninstall:**
+  - Periodic check for updates (manual or auto) with delta-aware downloads when available.
+  - Uninstall routine removes DLC files and registry entries while preserving save-game references gracefully (disable content rather than hard-delete references).
+
+- **Mod/DLC Safety & Governance:**
+  - Strict schema validation for all DLC JSON with clear error messages pointing to file and path.
+  - Sandbox isolation: DLC cannot overwrite core engine files; only additive content allowed.
+  - Optional “Safe Mode” startup that disables third-party DLC if validation fails.
+
+- **Offline & Enterprise Scenarios:**
+  - Support “side-load” DLC from local file paths for air-gapped environments.
+  - Command-line flags for administrators to preinstall DLC across multiple machines.
+
+- **Telemetry (Optional):**
+  - Anonymous opt-in metrics for install successes/failures and download performance to improve the pipeline.
+
+- **Developer Tooling:**
+  - A CLI helper `siliconlegacy dlc pack` to package and validate DLC archives (checksum/signature generation, schema validation).
+  - Unit tests covering manifest parsing, checksum verification, conflict resolution, and hot-load behavior.
