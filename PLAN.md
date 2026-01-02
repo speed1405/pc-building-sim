@@ -92,3 +92,12 @@ The game is built with a modular "Plug-in" architecture for future content:
 - **Advanced Thermal & Stability Model**: Real-time heat calculation based on case airflow, ambient temperature, and component TDP, affecting part longevity.
 - **Dynamic Retro Marketplace**: A simulated auction house for sourcing "untested" or "rare" parts from previous eras, with prices shifting based on rarity.
 - **Maintenance & Customization**: Deep interaction tools for cleaning dust, re-padding GPUs, and custom case modifications (painting/window cutting).
+
+---
+
+### 8. Integrated DLC Management System
+- **DLC Manifest Service**: A centralized remote JSON manifest listing available DLC packs, version info, and download URLs.
+- **In-Game Content Manager**: A dedicated UI menu to browse, purchase (simulated), and trigger downloads of new hardware packs and quest lines.
+- **Asynchronous Asset Downloader**: Background downloading of compressed DLC packages (`.zip`/`.7z`) with progress bars and CRC32 verification.
+- **Hot-Loading Architecture**: A dynamic "Hot-Swap" system for the JSON database that allows new parts to be injected into the game state without requiring a full application restart.
+- **Mod/DLC Sandbox**: A secure directory structure (`/dlc/`) that keeps expansion content isolated from the core engine files for easy management and uninstallation.
