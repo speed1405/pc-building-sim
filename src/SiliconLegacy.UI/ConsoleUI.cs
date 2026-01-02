@@ -256,11 +256,13 @@ public class ConsoleUI
         if (choice == "Back to Main Menu")
             return;
 
-        // Find the selected quest
-        var selectedIndex = questChoices.IndexOf(choice);
-        if (selectedIndex >= 0 && selectedIndex < gameState.AvailableQuests.Count)
+        // Find the selected quest by matching the quest name (strip markup if present)
+        var questName = choice.Replace("[green]★[/] ", "");
+        var selectedQuest = gameState.AvailableQuests.FirstOrDefault(q => q.Name == questName);
+        
+        if (selectedQuest != null)
         {
-            ShowQuestDetails(gameState, gameState.AvailableQuests[selectedIndex]);
+            ShowQuestDetails(gameState, selectedQuest);
         }
     }
 
