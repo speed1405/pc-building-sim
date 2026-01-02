@@ -2,7 +2,7 @@
 ## Official Design & Development Plan
 
 ### 1. Project Vision
-A text-based, cross-platform PC building simulation written in C# (.NET 8). Players navigate the history of personal computing through five distinct eras, completing grounded, real-life quests while managing compatibility, heat, and power.
+A text-based, cross-platform PC building simulation written in C# (.NET 8). Players navigate the history of personal computing through five distinct eras, completing grounded, real-life quests while managing a growing PC repair business.
 
 ---
 
@@ -83,3 +83,12 @@ The game is built with a modular "Plug-in" architecture for future content:
 - **Windows:** `.exe` self-contained via `dotnet publish -r win-x64`.
 - **Linux:** Native binary via `dotnet publish -r linux-x64`.
 - **macOS:** Universal binary via `dotnet publish -r osx-arm64`.
+
+---
+
+### 7. Core Mechanics Enhancements
+- **Deep Compatibility Engine**: Advanced logic for physical clearance (GPU length/height), chipset/socket dependencies, and power rail distribution.
+- **Interactive OS & BIOS Simulation**: A dedicated sub-terminal experience for driver installation, HDD partitioning, and manual BIOS overclocking.
+- **Advanced Thermal & Stability Model**: Real-time heat calculation based on case airflow, ambient temperature, and component TDP, affecting part longevity.
+- **Dynamic Retro Marketplace**: A simulated auction house for sourcing "untested" or "rare" parts from previous eras, with prices shifting based on rarity.
+- **Maintenance & Customization**: Deep interaction tools for cleaning dust, re-padding GPUs, and custom case modifications (painting/window cutting).
