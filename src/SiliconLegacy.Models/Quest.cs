@@ -11,6 +11,7 @@ public class Quest
     public QuestType Type { get; set; }
     public List<QuestRequirement> Requirements { get; set; } = new();
     public bool IsCompleted { get; set; }
+    public bool IsActive { get; set; }
 }
 
 public enum QuestType

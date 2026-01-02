@@ -1,0 +1,324 @@
+[
+  {
+    "Id": "era2-quest-001",
+    "Name": "Welcome to the 3D Era",
+    "Description": "Build your first Windows 98 PC with AGP graphics. Install a case, ATX motherboard, Pentium II CPU, SDRAM, AGP graphics card, and ATX power supply.",
+    "EraId": 2,
+    "Reward": 150.0,
+    "ReputationReward": 15,
+    "Type": 0,
+    "Requirements": [
+      {
+        "Description": "Install a case",
+        "Type": 0,
+        "PartType": "Case",
+        "IsMet": false
+      },
+      {
+        "Description": "Install an ATX motherboard",
+        "Type": 0,
+        "PartType": "Motherboard",
+        "IsMet": false
+      },
+      {
+        "Description": "Install a Pentium II or III CPU",
+        "Type": 0,
+        "PartType": "CPU",
+        "IsMet": false
+      },
+      {
+        "Description": "Install SDRAM",
+        "Type": 0,
+        "PartType": "RAM",
+        "IsMet": false
+      },
+      {
+        "Description": "Install an AGP graphics card",
+        "Type": 0,
+        "PartType": "GPU",
+        "IsMet": false
+      }
+    ],
+    "IsCompleted": false,
+    "IsActive": false
+  },
+  {
+    "Id": "era2-quest-002",
+    "Name": "Y2K Audit: Update BIOS for 50 PCs before midnight",
+    "Description": "The millennium bug is real! Update the BIOS on 50 client PCs to ensure they properly handle the year 2000 transition. Time is running out!",
+    "EraId": 2,
+    "Reward": 500.0,
+    "ReputationReward": 50,
+    "Type": 5,
+    "Requirements": [
+      {
+        "Description": "Update BIOS settings for Y2K compliance",
+        "Type": 1,
+        "IsMet": false
+      },
+      {
+        "Description": "Test boot to verify Y2K fix",
+        "Type": 3,
+        "IsMet": false
+      }
+    ],
+    "IsCompleted": false,
+    "IsActive": false
+  },
+  {
+    "Id": "era2-quest-003",
+    "Name": "AGP Voltage Mismatch",
+    "Description": "A customer's new AGP graphics card won't work in their older motherboard. Diagnose the AGP voltage compatibility issue (1.5V vs 3.3V) and install a compatible card.",
+    "EraId": 2,
+    "Reward": 200.0,
+    "ReputationReward": 20,
+    "Type": 1,
+    "Requirements": [
+      {
+        "Description": "Install a compatible AGP graphics card",
+        "Type": 0,
+        "PartType": "GPU",
+        "IsMet": false
+      },
+      {
+        "Description": "Test boot the PC",
+        "Type": 3,
+        "IsMet": false
+      }
+    ],
+    "IsCompleted": false,
+    "IsActive": false
+  },
+  {
+    "Id": "era2-quest-004",
+    "Name": "The 3dfx Voodoo Upgrade",
+    "Description": "Install a legendary 3dfx Voodoo graphics card for a gaming enthusiast who wants to experience Quake III Arena in all its glory.",
+    "EraId": 2,
+    "Reward": 250.0,
+    "ReputationReward": 25,
+    "Type": 2,
+    "Requirements": [
+      {
+        "Description": "Install a 3dfx Voodoo graphics card",
+        "Type": 0,
+        "PartType": "GPU",
+        "IsMet": false
+      },
+      {
+        "Description": "Install adequate cooling",
+        "Type": 0,
+        "PartType": "Cooling",
+        "IsMet": false
+      },
+      {
+        "Description": "Test boot the PC",
+        "Type": 3,
+        "IsMet": false
+      }
+    ],
+    "IsCompleted": false,
+    "IsActive": false
+  },
+  {
+    "Id": "era2-quest-005",
+    "Name": "Windows 98 SE Installation",
+    "Description": "Build a PC capable of running Windows 98 Second Edition smoothly. The customer needs it for their small business.",
+    "EraId": 2,
+    "Reward": 180.0,
+    "ReputationReward": 18,
+    "Type": 2,
+    "Requirements": [
+      {
+        "Description": "Install motherboard with USB support",
+        "Type": 0,
+        "PartType": "Motherboard",
+        "IsMet": false
+      },
+      {
+        "Description": "Install at least 64MB RAM",
+        "Type": 0,
+        "PartType": "RAM",
+        "IsMet": false
+      },
+      {
+        "Description": "Install storage drive",
+        "Type": 0,
+        "PartType": "Storage",
+        "IsMet": false
+      },
+      {
+        "Description": "Test boot the PC",
+        "Type": 3,
+        "IsMet": false
+      }
+    ],
+    "IsCompleted": false,
+    "IsActive": false
+  },
+  {
+    "Id": "era2-quest-006",
+    "Name": "Slot 1 to Socket 370 Transition",
+    "Description": "A customer wants to upgrade from Slot 1 Pentium II to the newer Socket 370 Pentium III. Replace the motherboard and CPU while preserving other components.",
+    "EraId": 2,
+    "Reward": 220.0,
+    "ReputationReward": 22,
+    "Type": 3,
+    "Requirements": [
+      {
+        "Description": "Install Socket 370 motherboard",
+        "Type": 0,
+        "PartType": "Motherboard",
+        "IsMet": false
+      },
+      {
+        "Description": "Install Pentium III CPU",
+        "Type": 0,
+        "PartType": "CPU",
+        "IsMet": false
+      },
+      {
+        "Description": "Test boot the PC",
+        "Type": 3,
+        "IsMet": false
+      }
+    ],
+    "IsCompleted": false,
+    "IsActive": false
+  },
+  {
+    "Id": "era2-quest-007",
+    "Name": "Sound Card Driver Conflict",
+    "Description": "A PC won't boot properly due to sound card driver conflicts. Diagnose and fix the issue by reinstalling or replacing the sound card.",
+    "EraId": 2,
+    "Reward": 175.0,
+    "ReputationReward": 17,
+    "Type": 4,
+    "Requirements": [
+      {
+        "Description": "Install or replace sound card",
+        "Type": 0,
+        "PartType": "SoundCard",
+        "IsMet": false
+      },
+      {
+        "Description": "Configure system settings",
+        "Type": 1,
+        "IsMet": false
+      },
+      {
+        "Description": "Test boot the PC",
+        "Type": 3,
+        "IsMet": false
+      }
+    ],
+    "IsCompleted": false,
+    "IsActive": false
+  },
+  {
+    "Id": "era2-quest-008",
+    "Name": "Budget Gaming Rig",
+    "Description": "Build an affordable gaming PC for a teenager. Must include AGP graphics, sound card, and enough power for Half-Life and Unreal Tournament.",
+    "EraId": 2,
+    "Reward": 300.0,
+    "ReputationReward": 30,
+    "Type": 2,
+    "Requirements": [
+      {
+        "Description": "Install AGP graphics card",
+        "Type": 0,
+        "PartType": "GPU",
+        "IsMet": false
+      },
+      {
+        "Description": "Install sound card",
+        "Type": 0,
+        "PartType": "SoundCard",
+        "IsMet": false
+      },
+      {
+        "Description": "Install at least 128MB RAM",
+        "Type": 0,
+        "PartType": "RAM",
+        "IsMet": false
+      },
+      {
+        "Description": "Test boot the PC",
+        "Type": 3,
+        "IsMet": false
+      }
+    ],
+    "IsCompleted": false,
+    "IsActive": false
+  },
+  {
+    "Id": "era2-quest-009",
+    "Name": "SDRAM Speed Mismatch",
+    "Description": "A customer reports random crashes. Investigate and fix the SDRAM speed mismatch issue - mixing PC66 and PC133 modules.",
+    "EraId": 2,
+    "Reward": 160.0,
+    "ReputationReward": 16,
+    "Type": 4,
+    "Requirements": [
+      {
+        "Description": "Install matching SDRAM modules",
+        "Type": 0,
+        "PartType": "RAM",
+        "IsMet": false
+      },
+      {
+        "Description": "Configure BIOS timing",
+        "Type": 1,
+        "IsMet": false
+      },
+      {
+        "Description": "Test boot the PC",
+        "Type": 3,
+        "IsMet": false
+      }
+    ],
+    "IsCompleted": false,
+    "IsActive": false
+  },
+  {
+    "Id": "era2-quest-010",
+    "Name": "Pentium III Coppermine Build",
+    "Description": "Build a high-end system with the new Pentium III Coppermine processor for a professional video editor. Quality and performance are paramount.",
+    "EraId": 2,
+    "Reward": 350.0,
+    "ReputationReward": 35,
+    "Type": 2,
+    "Requirements": [
+      {
+        "Description": "Install Pentium III CPU",
+        "Type": 0,
+        "PartType": "CPU",
+        "IsMet": false
+      },
+      {
+        "Description": "Install at least 256MB RAM",
+        "Type": 0,
+        "PartType": "RAM",
+        "IsMet": false
+      },
+      {
+        "Description": "Install AGP graphics card",
+        "Type": 0,
+        "PartType": "GPU",
+        "IsMet": false
+      },
+      {
+        "Description": "Install adequate cooling",
+        "Type": 0,
+        "PartType": "Cooling",
+        "IsMet": false
+      },
+      {
+        "Description": "Test boot the PC",
+        "Type": 3,
+        "IsMet": false
+      }
+    ],
+    "IsCompleted": false,
+    "IsActive": false
+  }
+]
