@@ -82,9 +82,19 @@ Currently, the project uses manual testing. We welcome contributions to add auto
 
 The project uses GitHub Actions to automatically build and release binaries for all supported platforms (Linux x64, Windows x64, macOS x64, and macOS ARM64).
 
-#### Method 1: Automatic Release via Git Tag
+#### Method 1: Automatic Draft Release on Main Branch
 
-Push a version tag to trigger an automatic release:
+When code is merged to the `main` branch, the workflow automatically:
+1. Builds binaries for all platforms
+2. Creates archives (`.zip` for Windows, `.tar.gz` for Unix platforms)
+3. Creates a **draft release** with auto-generated tag name (format: `draft-YYYYMMDD-HHMMSS-{sha}`)
+4. Generates release notes from commits automatically
+
+Draft releases are not visible to the public and can be edited or published later through the GitHub UI.
+
+#### Method 2: Published Release via Git Tag
+
+Push a version tag to trigger an automatic published release:
 
 ```bash
 # Create and push a version tag
@@ -95,10 +105,10 @@ git push origin v1.0.0
 This will automatically:
 1. Build binaries for all platforms
 2. Create archives (`.zip` for Windows, `.tar.gz` for Unix platforms)
-3. Create a GitHub release with all artifacts
+3. Create a **published** GitHub release with all artifacts
 4. Generate release notes automatically
 
-#### Method 2: Manual Release via GitHub UI
+#### Method 3: Manual Release via GitHub UI
 
 You can also trigger a release manually:
 
@@ -108,7 +118,7 @@ You can also trigger a release manually:
 4. Enter the version tag (e.g., `v1.0.0`)
 5. Click "Run workflow"
 
-The workflow will build and create a release with the specified version tag.
+The workflow will build and create a published release with the specified version tag.
 
 ### Release Versioning
 
