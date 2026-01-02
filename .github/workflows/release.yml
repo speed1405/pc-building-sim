@@ -4,12 +4,18 @@ on:
   push:
     tags:
       - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version tag (e.g., v1.0.0)'
+        required: true
+        type: string
 
 jobs:
   release:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
     strategy:
       matrix:
         include:
@@ -24,6 +30,16 @@ jobs:
     
     steps:
     - uses: actions/checkout@v4
+    
+    - name: Validate version format
+      if: github.event_name == 'workflow_dispatch'
+      run: |
+        VERSION="${{ github.event.inputs.version }}"
+        if ! echo "$VERSION" | grep -qE '^v[0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z0-9]+)?(\+[a-zA-Z0-9]+)?$'; then
+          echo "Error: Version must be in semantic versioning format (e.g., v1.0.0, v1.0.0-beta, v1.0.0+build123)"
+          exit 1
+        fi
+        echo "Version format is valid: $VERSION"
     
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
@@ -91,12 +107,12 @@ jobs:
       uses: softprops/action-gh-release@v1
       with:
         files: |
-          artifacts/siliconlegacy-linux-x64/*.tar.gz
-          artifacts/siliconlegacy-win-x64/*.zip
-          artifacts/siliconlegacy-osx-x64/*.tar.gz
-          artifacts/siliconlegacy-osx-arm64/*.tar.gz
+          artifacts/siliconlegacy-linux-x64/*
+          artifacts/siliconlegacy-win-x64/*
+          artifacts/siliconlegacy-osx-x64/*
+          artifacts/siliconlegacy-osx-arm64/*
         draft: false
         prerelease: false
         generate_release_notes: true
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        tag_name: ${{ github.event.inputs.version || github.ref_name }}
+        token: ${{ secrets.GITHUB_TOKEN }}
