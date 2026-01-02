@@ -103,8 +103,10 @@ jobs:
     - name: Generate tag name for main branch
       id: generate_tag
       run: |
-        if [ "${{ github.ref }}" = "refs/heads/main" ]; then
-          TAG_NAME="draft-$(date +'%Y%m%d-%H%M%S')-$(echo ${{ github.sha }} | cut -c1-7)-${{ github.run_number }}"
+        if [ "${{ github.event_name }}" = "push" ] && [ "${{ github.ref_name }}" = "main" ]; then
+          # Extract date from GitHub Actions context for consistency
+          TIMESTAMP=$(date -u -d "${{ github.event.head_commit.timestamp }}" +'%Y%m%d-%H%M%S' 2>/dev/null || date -u +'%Y%m%d-%H%M%S')
+          TAG_NAME="draft-${TIMESTAMP}-$(echo ${{ github.sha }} | cut -c1-7)-${{ github.run_number }}"
           echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
           echo "is_draft=true" >> $GITHUB_OUTPUT
         else
